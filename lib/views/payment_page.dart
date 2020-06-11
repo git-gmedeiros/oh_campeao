@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_oh_campeao/services/menuList.dart';
 import 'package:projeto_oh_campeao/views/home/home_page.dart';
+import 'package:projeto_oh_campeao/views/payment_page_2.dart';
 import 'package:projeto_oh_campeao/widgets/custom_card.dart';
 
 
@@ -32,16 +33,15 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
-        CustomCard(Text("Comanda Pessoal")),
         Expanded(child: CustomCard(listOrder())),
-        CustomCard(Text("Comanda da mesa")),
-        Expanded(child: CustomCard(listOrderTable())),
+       // CustomCard(Text("Comanda da mesa")),
+       // Expanded(child: CustomCard(listOrderTable())),
         CustomCard(Text("Total: R\$ 150,00")),
         CustomCard(FlatButton(
           onPressed: () {Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()));},
-          child: Text("Pagar"),
+                  MaterialPageRoute(builder: (context) => PaymentPage2()));},
+          child: Text("Pagar", style: TextStyle(fontSize: 20)),                  
         ))
       ],
     );
@@ -63,7 +63,7 @@ class _PaymentPageState extends State<PaymentPage> {
         });
   }
 
-  static Widget listOrderTable() {
+ /* static Widget listOrderTable() {
     return ListView.builder(
         itemCount: orderTable == null ? 0 : orderTable.length,
         itemBuilder: (BuildContext context, int index) {
@@ -77,5 +77,5 @@ class _PaymentPageState extends State<PaymentPage> {
               )),
               trailing: Text(orderTable[index].price));
         });
-  }
+  }*/
 }
