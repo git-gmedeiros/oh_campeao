@@ -41,14 +41,14 @@ class _PageOrderListState extends State<PageOrderList> {
                 itemCount: list == null ? 0 : list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                      title: Text(list[index].name),
+                      title: Text(list[index].nome),
                       subtitle: Center(
                           child: Row(
                         children: <Widget>[
                           Text(list[index].quantity.toString()),
                         ],
                       )),
-                      trailing: Text(list[index].price));
+                      trailing: Text(list[index].valor.toString()));
                 })),
       ],
     );

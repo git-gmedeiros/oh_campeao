@@ -1,18 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:projeto_oh_campeao/models/menu.dart';
-import 'package:projeto_oh_campeao/services/menuList.dart';
-import 'package:projeto_oh_campeao/views/home/home_page.dart';
-import 'package:projeto_oh_campeao/widgets/custom_card.dart';
-import 'package:projeto_oh_campeao/widgets/custom_drawer.dart';
+import 'dart:io';
+import 'dart:async';
+import 'dart:convert';
 
-class PageMenuList extends StatefulWidget {
-  static const String routeName = '/menu';
+import 'package:flutter/material.dart';
+
+import 'package:projeto_oh_campeao/services/menuList.dart';
+import 'package:projeto_oh_campeao/models/menu.dart';
+
+import 'package:projeto_oh_campeao/widgets/custom_card.dart';
+
+class Historic extends StatefulWidget {
+  static const String routeName = '/Historic';
   @override
-  _PageMenuListState createState() => _PageMenuListState();
+  _HistoricState createState() => _HistoricState();
 }
 
-class _PageMenuListState extends State<PageMenuList> {
-  List<Product> list = Menu.getMenuList();
+
+class _HistoricState extends State<Historic> {
+
+  Uri url = Uri.parse('http://192.168.15.10:8080/api/produto/todos');
+  List<Product> list = Menu.getMenuList(); 
+
+
 
   @override
   Widget build(BuildContext context) {

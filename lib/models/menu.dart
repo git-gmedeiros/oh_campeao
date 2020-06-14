@@ -1,39 +1,33 @@
 import 'dart:convert';
 
-
+import 'dart:ffi';
 
 class Product {
-  String productId;
-  String name;
-  String price;
-  int quantity = 0;
+  String nome;
+  String categoria;
+  double valor;
+  bool disponivel;
+  int id;
+  double quantity;
 
-  Product({
-    this.productId,
-    this.name,
-    this.price,
-    this.quantity
-  });
+  Product({this.nome, this.categoria, this.valor, this.disponivel, this.id, this.quantity});
 
-  /*factory User.fromDocument(DocumentSnapshot document) {
-    return User.fromMap(document.data);
-  }*/
+  Product.fromJson(Map<String, dynamic> json) {
+    nome = json['nome'];
+    categoria = json['categoria'];
+    valor = json['valor'];
+    disponivel = json['disponivel'];
+    id = json['id'];
+    quantity = 0;
+  }
 
-  factory Product.fromJson(String str) => Product.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
-  factory Product.fromMap(Map<String, dynamic> json) => Product(
-        productId: json["productId"] == null ? null : json["productId"],
-        name: json["name"] == null ? null : json["name"],
-        price: json["email"] == null ? null : json["email"],
-        
-      );
-
-  Map<String, dynamic> toMap() => {
-        "userID": productId == null ? null : productId,
-        "name": name == null ? null : name,
-        "email": price == null ? null : price,
-      };
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['nome'] = this.nome;
+    data['categoria'] = this.categoria;
+    data['valor'] = this.valor;
+    data['disponivel'] = this.disponivel;
+    data['id'] = this.id;
+    return data;
+  }
 }
