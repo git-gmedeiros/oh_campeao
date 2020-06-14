@@ -10,12 +10,15 @@ import 'package:projeto_oh_campeao/models/menu.dart';
 class Menu {
   static List<Product> data = List<Product>();
   static List<Product> dataOrder = List<Product>();
-  static List<Product> dataOrderTable;
+  static List<Product> dataOrderTable  = List<Product>();
 
-  
+  static double total = 0.0;
+  static double totalTable = 0.0;
+  static double totalOrder = 0.0;
 
   static Future<bool> menuList() async {    
 
+    data = [];
     Response response = await Dio().request(
       "http://ohcampeao.ddns.net/api/produto/todos",
       options: Options(headers: {"Accept": "application/json"})
@@ -35,19 +38,42 @@ class Menu {
     return data;
   }
 
-  static void order(List list) {
+
+   static void order(List<Product> list) {
     var post = list.toString();
+    if (list.length > 0) {
+      for (int i = 0; i < list.length; i++) {
+        if (list[i].quantity > 0) {
+          dataOrder.add(list[i]);
+          total += list[i].valor * list[i].quantity;
+          totalOrder += list[i].valor * list[i].quantity;
+        }
+      }
+    }
     print(post);
     menuList();
   }
 
-  static void orderTable(List list) {
-    var post = list.toString();
-    print(post);
+  static void orderTable(List<Product> list) {
+    //var post = list.toString();
+    //dataOrderTable = list;
+    //list.setAll(list.length, dataOrderTable);
+    if (list.length > 0) {
+      for (int i = 0; i < list.length; i++) {
+        if (list[i].quantity > 0) {
+          dataOrderTable.add(list[i]);
+          totalTable += list[i].valor * list[i].quantity;
+          totalOrder += (list[i].valor * list[i].quantity) / 5;
+          list[i].valor = list[i].valor / 5;
+          dataOrder.add(list[i]);
+        }
+      }
+    }
+    //print(post);
     menuList();
   }
 
-  static Future<bool> orderList() async {
+   static Future<bool> orderList() async {
     /*var response = await http.get(
       Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
       headers: {
@@ -55,38 +81,19 @@ class Menu {
       }
     );
 
-  var l = [
-  {
-    "productId": 1,
-    "price": 25,
-    "name": "Macarrão",
-  },
-  {
-   "productId": 2,
-    "price": 35,
-    "name": "Suco",
-    },
-  {
-    "productId": 3,
-    "price": 45,
-    "name": "Coca-cola",
-    }
-  ];
-
-
   Iterable list = json.decode(response.body);
 
     print(response.body);
     data = list.map((model) => Product.fromJson(model)).toList();*/
-
-    /*dataOrder = [
+/*
+    dataOrder = [
       Product(
-          name: "suco de uva", price: "R\$ 25,00", productId: "1", quantity: 3),
-      Product(name: "carne", price: "R\$ 30,00", productId: "2", quantity: 5),
-      Product(name: "coca", price: "R\$ 5,00", productId: "3", quantity: 1),
-      Product(name: "torta", price: "R\$ 3,00", productId: "4", quantity: 1)
-    ];*/
-
+          name: "suco de uva", price: "25.00", productId: "1", quantity: 3),
+      Product(name: "carne", price: "30.00", productId: "2", quantity: 5),
+      Product(name: "coca", price: "5.00", productId: "3", quantity: 1),
+      Product(name: "torta", price: "3.00", productId: "4", quantity: 1)
+    ];
+*/
     return true;
   }
 
@@ -102,38 +109,19 @@ class Menu {
       }
     );
 
-  var l = [
-  {
-    "productId": 1,
-    "price": 25,
-    "name": "Macarrão",
-  },
-  {
-   "productId": 2,
-    "price": 35,
-    "name": "Suco",
-    },
-  {
-    "productId": 3,
-    "price": 45,
-    "name": "Coca-cola",
-    }
-  ];
-
-
   Iterable list = json.decode(response.body);
 
     print(response.body);
     data = list.map((model) => Product.fromJson(model)).toList();*/
-
- /*   dataOrderTable = [
+/*
+    dataOrderTable = [
       Product(
-          name: "suco de laranja", price: "R\$ 15,00", productId: "1", quantity: 5),
-      Product(name: "finho", price: "R\$ 30,00", productId: "2", quantity: 2),
-      Product(name: "bolo", price: "R\$ 50,00", productId: "3", quantity: 4),
-      Product(name: "salgado", price: "R\$ 5,00", productId: "4", quantity: 2)
-    ];*/
-
+          name: "suco de laranja", price: "15.00", productId: "1", quantity: 5),
+      Product(name: "finho", price: "30.00", productId: "2", quantity: 2),
+      Product(name: "bolo", price: "50.00", productId: "3", quantity: 4),
+      Product(name: "salgado", price: "5.00", productId: "4", quantity: 2)
+    ];
+*/
     return true;
   }
 
@@ -141,4 +129,27 @@ class Menu {
     return dataOrderTable;
   }
 
+
+  static double getTotal() {
+    return total;
+  }
+
+  static double getTotalOrder() {
+    return totalOrder;
+  }
+
+  static double getTotalTable() {
+    return totalTable;
+  }
+
+  static void clearData() {
+    dataOrder = [];
+    dataOrderTable = [];;
+
+    total = 0.0;
+    totalTable = 0.0;
+    totalOrder = 0.0;
+
+  }
+  
 }

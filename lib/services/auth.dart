@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+
 import 'package:flutter/services.dart';
 
 
@@ -6,27 +6,11 @@ class Auth {
   
   static String userId= "";
   
-  static String signIn(String email, String password){
+  static Future<String> signIn(String email, String password) async {
     
-    var data = [];
-
-    Response response = await Dio().request(
-      "http://ohcampeao.ddns.net/api/produto/todos",
-      options: Options(headers: {"Accept": "application/json"})
-    );
-    
-    var produto = response.data["resultData"];
-
-    print(produto);
-
-    for(Map<String,dynamic> item in produto){
-      data.add(Product.fromJson(item));
-    }        
-
-    return true;
 
     userId = "Guilherme";
-    return "NOK";
+    return "Guilherme";
   }
 
   static Future<String> signUp(String cpf, String password, String name, String phone) async {

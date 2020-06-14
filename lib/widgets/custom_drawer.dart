@@ -5,7 +5,6 @@ import 'package:projeto_oh_campeao/stores/login_store.dart';
 import 'package:projeto_oh_campeao/views/home/home_page.dart';
 import 'package:projeto_oh_campeao/views/login/login_screen.dart';
 import 'package:projeto_oh_campeao/views/payment_page.dart';
-import 'package:projeto_oh_campeao/views/historic.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -38,14 +37,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).pushReplacementNamed(PaymentPage.routeName);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.cloud_upload),
-            title: Text('Histórico'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.of(context).pushReplacementNamed(Historic.routeName);
             },
           ),
           Divider(),

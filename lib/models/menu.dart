@@ -9,6 +9,7 @@ class Product {
   bool disponivel;
   int id;
   double quantity;
+  String order;
 
   Product({this.nome, this.categoria, this.valor, this.disponivel, this.id, this.quantity});
 
@@ -19,6 +20,7 @@ class Product {
     disponivel = json['disponivel'];
     id = json['id'];
     quantity = 0;
+    order = "";
   }
 
   Map<String, dynamic> toJson() {

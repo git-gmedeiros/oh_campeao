@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_oh_campeao/models/menu.dart';
 import 'package:projeto_oh_campeao/services/menuList.dart';
-import 'package:projeto_oh_campeao/views/home/home_page.dart';
 import 'package:projeto_oh_campeao/views/payment_page_2.dart';
 import 'package:projeto_oh_campeao/widgets/custom_card.dart';
-
 
 class PaymentPage extends StatefulWidget {
   static const String routeName = '/payment';
@@ -11,11 +10,9 @@ class PaymentPage extends StatefulWidget {
   _PaymentPageState createState() => _PaymentPageState();
 }
 
-List myListOrder = Menu.getOrderList();
-List orderTable = Menu.getOrderTableList();
-
-
 class _PaymentPageState extends State<PaymentPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,49 +30,42 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget _buildBody() {
     return Column(
       children: <Widget>[
+        CustomCard(Text("Comanda")),
         Expanded(child: CustomCard(listOrder())),
-       // CustomCard(Text("Comanda da mesa")),
-       // Expanded(child: CustomCard(listOrderTable())),
-        CustomCard(Text("Total: R\$ 150,00")),
+        CustomCard(Text("Total R\$   " + Menu.getTotalOrder().toStringAsFixed(2))),
         CustomCard(FlatButton(
-          onPressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PaymentPage2()));},
-          child: Text("Pagar", style: TextStyle(fontSize: 20)),                  
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PaymentPage2()));
+          },
+          child: Text("Pagar"),
         ))
       ],
     );
   }
 
   static Widget listOrder() {
+    List<Product> myListOrder = Menu.getOrderList();
     return ListView.builder(
         itemCount: myListOrder == null ? 0 : myListOrder.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              title: Text(myListOrder[index].name),
+              title: Text(myListOrder[index].nome),
               subtitle: Center(
                   child: Row(
                 children: <Widget>[
-                  Text(myListOrder[index].quantity.toString()),
+                  Text(myListOrder[index].quantity.toString() + "          "),
+                  myListOrder[index].order == "individual"
+                      ? Icon(Icons.person)
+                      : Icon(Icons.people),
+                  myListOrder[index].order == "individual"
+                      ? Text("")
+                      : Text("5")
                 ],
               )),
-              trailing: Text(myListOrder[index].price));
+              trailing: Text("R\$  " + (myListOrder[index].valor *
+                      myListOrder[index].quantity)
+                  .toStringAsFixed(2)));
         });
   }
-
- /* static Widget listOrderTable() {
-    return ListView.builder(
-        itemCount: orderTable == null ? 0 : orderTable.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-              title: Text(orderTable[index].name),
-              subtitle: Center(
-                  child: Row(
-                children: <Widget>[
-                  Text(orderTable[index].quantity.toString()),
-                ],
-              )),
-              trailing: Text(orderTable[index].price));
-        });
-  }*/
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_oh_campeao/services/menuList.dart';
+import 'package:projeto_oh_campeao/utils/utils.dart';
 import 'package:projeto_oh_campeao/views/home/home_page.dart';
 import 'package:projeto_oh_campeao/widgets/custom_card.dart';
 
@@ -11,6 +12,7 @@ class PaymentCardPage extends StatefulWidget {
 
 List myListOrder = Menu.getOrderList();
 List orderTable = Menu.getOrderTableList();
+bool loading = false;
 
 enum SingingCharacter { credito, debito }
 
@@ -57,14 +59,22 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
           },
         )),
         const Divider(
-            height: 200,
+          height: 200,
         ),
         CustomCard(FlatButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomePage()));
+          onPressed: () async {
+            setState(() {
+              loading = true;
+            });
+            await Future.delayed(Duration(seconds: 2));
+            loading = false;
+            Menu.clearData();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
           },
-          child: Text("Pagar", style: TextStyle(fontSize: 20)),
+          child: loading
+              ? Util.loading()
+              : Text("Pagar", style: TextStyle(fontSize: 20)),
         )),
       ],
     );
