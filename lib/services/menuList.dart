@@ -17,7 +17,7 @@ class Menu {
   static Future<bool> menuList() async {    
 
     Response response = await Dio().request(
-      "http://192.168.15.10:8080/api/produto/todos",
+      "http://ohcampeao.ddns.net/api/produto/todos",
       options: Options(headers: {"Accept": "application/json"})
     );
     var produto = response.data["resultData"];
