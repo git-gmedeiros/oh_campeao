@@ -8,6 +8,7 @@ class Auth {
   
   static Future<String> signIn(String email, String password) async {
     
+
     userId = "Guilherme";
     return "Guilherme";
   }

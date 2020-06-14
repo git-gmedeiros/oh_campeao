@@ -1,9 +1,11 @@
 import 'package:mobx/mobx.dart';
 import 'package:projeto_oh_campeao/services/auth.dart';
-
+import 'package:dio/dio.dart';
 import 'package:projeto_oh_campeao/services/menuList.dart';
 
 part 'login_store.g.dart';
+
+
 
 class LoginStore = _LoginStore with _$LoginStore;
 
@@ -76,18 +78,32 @@ abstract class _LoginStore with Store {
   Future<void> login() async {
     loading = true;
 
-    await Future.delayed(Duration(seconds: 2));
-    Auth.signIn(cpf, password);
+    //var ret = Auth.signIn(cpf, password); 
+     var data = [];
 
-    await Menu.menuList();
-    await Menu.orderList();
-    await Menu.orderTableList();
+    Response response = await Dio().request(
+      "http://ohcampeao.ddns.net/api/produto/todos",
+      options: Options(headers: {"Accept": "application/json"})
+    );
 
-    loading = false;
-    loggedIn = true;
+    var produto = response.data["resultData"];
 
-    cpf = "";
-    password = "";
+    print(produto);
+
+    /*for(Map<String,dynamic> item in produto){
+      data.add(Product.fromJson(item));
+    } */       
+
+      await Menu.menuList();
+      await Menu.orderList();
+      await Menu.orderTableList();
+
+      loading = false;
+      loggedIn = true;
+
+      cpf = "";
+      password = "";
+
   }
 
   @action

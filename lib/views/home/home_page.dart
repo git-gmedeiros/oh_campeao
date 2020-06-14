@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_oh_campeao/models/table.dart';
 import 'package:projeto_oh_campeao/services/auth.dart';
+import 'package:projeto_oh_campeao/utils/utils.dart';
 import 'package:projeto_oh_campeao/views/Menu/listMenu_page.dart';
 import 'package:projeto_oh_campeao/views/order.dart';
 import 'package:projeto_oh_campeao/widgets/custom_card.dart';
@@ -21,6 +22,8 @@ class _HomePageState extends State<HomePage> {
   bool qrcode = false;
   bool ler = false;
   String codigo = "";
+  bool campeao = false;
+  bool loading = false;
 
   int page = 0;
 
@@ -28,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    _captureController.onCapture((data) {
+    /*_captureController.onCapture((data) {
       print('onCapture----$data');
       if (data == null) {
         codigo = "";
@@ -39,20 +42,26 @@ class _HomePageState extends State<HomePage> {
         qrcode = false;
         page = 1;
       });
-    });
+    });*/
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> allWidget = <Widget>[
-      Expanded(child: CustomCard(Center(child: Text("leia um qrcode")))),
+      Expanded(
+          child: CustomCard(Center(
+              child: Text(
+        "leia um qrcode",
+      )))),
       Expanded(child: CustomCard(PageOrderList())),
     ];
 
     return Scaffold(
-        appBar: AppBar(title: Text("Home")),
+        appBar: AppBar(
+          title: Text("Home"),
+          actions: <Widget>[_actionOhCampeao()],
+        ),
         drawer: CustomDrawer(),
-        
         body: qrcode
             ? _buildqrcode()
             : Container(
@@ -64,6 +73,40 @@ class _HomePageState extends State<HomePage> {
                     allWidget[page],
                     CustomCard(codigo == "" ? _buttonQRCode() : _order())
                   ])));
+  }
+
+  Widget _actionOhCampeao() {
+    return Row(
+      children: <Widget>[
+        Stack(
+          children: <Widget>[
+            Center(
+                child: Container(
+              child: campeao
+                  ? Icon(Icons.notifications_active)
+                  : Icon(Icons.notifications_none),
+            )),
+          ],
+        ),
+        Container(
+          child: FlatButton(
+              onPressed: () async {
+                setState(() {
+                  campeao ? campeao = false : campeao = true;
+                  loading = true;
+                });
+                await Future.delayed(Duration(seconds: 4));
+                setState(() {
+                  loading = false;
+                  campeao ? campeao = false : campeao = true;
+                });
+              },
+              child: loading ? Util.loading() :Text("Chamar oh_campeão",
+                  style: TextStyle(color: Colors.white))
+              ),
+        ),
+      ],
+    );
   }
 
   Widget _buildTable() {
@@ -113,11 +156,17 @@ class _HomePageState extends State<HomePage> {
           child: Text("Por gentileza leia o QRCODE"),
           color: Colors.deepPurpleAccent,
           onPressed: () {
+            codigo = "1";
+            TableI.setTable("1");
             setState(() {
+              qrcode = false;
+              page = 1;
+            });
+            /*setState(() {
               qrcode = true;
               codigo = "";
               page = 1;
-            });
+            });*/
           },
         ));
   }
